@@ -30,6 +30,13 @@ const fetch = function fetch(url) {
         return reject(err)
       }
 
+      if (response.statusCode < 200 || response.statusCode >= 400) {
+        return reject({
+          code: response.statusCode,
+          message: body.message,
+        })
+      }
+
       return resolve(body)
     })
   })
@@ -69,6 +76,17 @@ const mapReposToAtom = function mapReposToAtom(username, data) {
 }
 
 /**
+ * Redirect middleware
+ */
+app.use(async (ctx, next) => {
+  if (ctx.url === '/') {
+    ctx.redirect('https://github.com/sqrthree/stars-to-xml')
+  } else {
+    await next()
+  }
+})
+
+/**
  * response middleware
  */
 app.use(async ctx => {
@@ -83,7 +101,24 @@ app.use(async ctx => {
 
   const username = result[1]
 
-  const repos = await fetch(`https://api.github.com/users/${username}/starred`)
+  if (!username) {
+    return ctx.throw(400)
+  }
+
+  let repos = null
+
+  try {
+    repos = await fetch(`https://api.github.com/users/${username}/starred`)
+  } catch(err) {
+    status = err.code || '500'
+    message = err.message || 'Internal Server Error'
+
+    return ctx.throw(status, message)
+  }
+
+  if (!repos) {
+    return ctx.throw(500)
+  }
 
   const atom = mapReposToAtom(username, repos)
 
