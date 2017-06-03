@@ -1,18 +1,30 @@
 {
-  "name": "atom",
+  "name": "stars-to-xml",
   "version": "0.1.0",
-  "description": "",
-  "main": "index.js",
+  "description": "map your GitHub stars to xml",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "sqrtthree <imsqrtthree@gmail.com>",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "dependencies": {
     "feed": "1.0.2",
     "koa": "2.2.0",
     "path-to-regexp": "1.7.0",
     "request": "2.81.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sqrthree/stars-to-xml.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sqrthree/stars-to-xml/issues"
+  },
+  "homepage": "https://github.com/sqrthree/stars-to-xml#readme",
+  "engines": {
+    "node": ">=6.0.0"
   }
 }
